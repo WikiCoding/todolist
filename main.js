@@ -83,6 +83,8 @@ speakBtn.addEventListener('click', (e)=>{
 			const trimTransc = reducedTransc.trim();
 			todoInput.value = trimTransc;
 			
+			todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
+			
 			newTodoForm.addEventListener('change', ()=>{
 				todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
 			});
