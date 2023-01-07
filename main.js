@@ -2,6 +2,8 @@ todos = JSON.parse(localStorage.getItem('todos')) || [];
 const nameInput = document.querySelector('#name');
 const newTodoForm = document.querySelector('#new-todo-form');
 const addBtn = document.querySelector('#add-btn');
+const todoInput = document.querySelector('#content');
+
 	
 const username = localStorage.getItem('username') || '';
 
@@ -11,15 +13,25 @@ nameInput.addEventListener('change', (e) => {
 		localStorage.setItem('username', e.target.value);
 	})
 
-addBtn.addEventListener('submit', e => {
+addBtn.addEventListener('click', e => {
 	e.preventDefault();
-		
+	
 	const todo = {
-		content: e.target.elements.content.value,
-		category: e.target.elements.category.value,
+		content: todoInput.value,
+		category: "",
 		done: false,
 		createdAt: new Date().getTime()
 		} 
+	
+	const persCat = document.getElementById('category2');
+	const busiCat = document.getElementById('category1');
+
+	if (persCat.checked) {
+		todo.category = 'personal';
+	}else{
+		todo.category = 'business';
+	}
+
 	if (todo.category == "")
 	{
 		alert("You need to select one category");
@@ -28,21 +40,20 @@ addBtn.addEventListener('submit', e => {
 		todos.push(todo);
 		localStorage.setItem('todos', JSON.stringify(todos));
 
-	// Reset the form
-	e.target.reset();
+	todoInput.value = "";
+	persCat.checked = false;
+	busiCat.checked = false;
 
 	DisplayTodos()
 	}
 	
 })
 
-const todoInput = document.querySelector('#content');
 const speakBtn = document.querySelector('.speak');
 
 speakBtn.addEventListener('click', (e)=>{
 	e.preventDefault();
 	window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
 	todos = JSON.parse(localStorage.getItem('todos')) || [];
 	const todoItem = document.querySelector('.todo-item');
 	
@@ -82,11 +93,11 @@ speakBtn.addEventListener('click', (e)=>{
 			const reducedTransc = transcript.slice(13);
 			const trimTransc = reducedTransc.trim();
 			todoInput.value = trimTransc;
-			
-			todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
+
+			const todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
 			
 			newTodoForm.addEventListener('change', ()=>{
-				todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
+				const todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
 			});
 			addBtn.addEventListener('click', ()=>{
 				todos.push(todo);
@@ -103,9 +114,9 @@ speakBtn.addEventListener('click', (e)=>{
 			/* console.log(reducedTransc);
 			console.log(trimTransc); */
 			todoInput.value = trimTransc;
-			todo = {content: todoInput.value, category: "business", done: false, createdAt: new Date().getTime()};
+			const todo = {content: todoInput.value, category: "business", done: false, createdAt: new Date().getTime()};
 			newTodoForm.addEventListener('change', ()=>{
-				todo = {content: todoInput.value, category: "business", done: false, createdAt: new Date().getTime()};
+				const todo = {content: todoInput.value, category: "business", done: false, createdAt: new Date().getTime()};
 			});
 			addBtn.addEventListener('click', ()=>{
 				todos.push(todo);
@@ -115,7 +126,6 @@ speakBtn.addEventListener('click', (e)=>{
 			DisplayTodos();
 		}
 	  });
-
 	  setTimeout((recognition.start()),7000);
 });
 
