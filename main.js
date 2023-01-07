@@ -3,7 +3,6 @@ const nameInput = document.querySelector('#name');
 const newTodoForm = document.querySelector('#new-todo-form');
 const addBtn = document.querySelector('#add-btn');
 const todoInput = document.querySelector('#content');
-
 	
 const username = localStorage.getItem('username') || '';
 
@@ -13,39 +12,43 @@ nameInput.addEventListener('change', (e) => {
 		localStorage.setItem('username', e.target.value);
 	})
 
-addBtn.addEventListener('click', e => {
+addBtn.addEventListener('click', (e) => {
 	e.preventDefault();
 	
-	const todo = {
+	todo = {
 		content: todoInput.value,
 		category: "",
 		done: false,
 		createdAt: new Date().getTime()
-		} 
-	
+		}
+
+	if (todo.content === "") {
+		alert("Please add an input and select the corresponding category");
+		return;
+	}
+
 	const persCat = document.getElementById('category2');
 	const busiCat = document.getElementById('category1');
 
-	if (persCat.checked) {
+	if (!persCat.checked && !busiCat.checked) {
+		alert("You need to select one category");
+		return;
+	}
+	else if (persCat.checked) {
 		todo.category = 'personal';
 	}else{
 		todo.category = 'business';
 	}
 
-	if (todo.category == "")
-	{
-		alert("You need to select one category");
-		return;
-	} else {
-		todos.push(todo);
-		localStorage.setItem('todos', JSON.stringify(todos));
+	todos.push(todo);
+	localStorage.setItem('todos', JSON.stringify(todos));
 
 	todoInput.value = "";
 	persCat.checked = false;
 	busiCat.checked = false;
 
 	DisplayTodos()
-	}
+	
 	
 })
 
@@ -72,10 +75,10 @@ speakBtn.addEventListener('click', (e)=>{
 			todoInput.value = transcript;
 	  	}
 
-	  	if (transcript.startsWith("feito")) {
-			const reducedTransc = transcript.slice(5);
+	  	if (transcript.startsWith("marcar")) {
+			const reducedTransc = transcript.slice(6);
 			const trimTransc = reducedTransc.trim();
-			//console.log(trimTransc, "trimTransc")
+			
 			todos.forEach(todo => {
 				if(todo.content == trimTransc){
 					todo.done = true
@@ -84,7 +87,6 @@ speakBtn.addEventListener('click', (e)=>{
 					todoInput.value = "";
 					
 					DisplayTodos();
-					
 				}
 			})
 		} else if(transcript.startsWith("criar pessoal")) {
@@ -93,17 +95,11 @@ speakBtn.addEventListener('click', (e)=>{
 			const reducedTransc = transcript.slice(13);
 			const trimTransc = reducedTransc.trim();
 			todoInput.value = trimTransc;
-
-			const todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
 			
 			newTodoForm.addEventListener('change', ()=>{
-				const todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
+				todo = {content: todoInput.value, category: "personal", done: false, createdAt: new Date().getTime()};
 			});
-			addBtn.addEventListener('click', ()=>{
-				todos.push(todo);
-				localStorage.setItem('todos', JSON.stringify(todos));
-				todoInput.value="";
-			});
+			
 			DisplayTodos();
 			
 		}else if(transcript.startsWith("criar trabalho")){
@@ -111,18 +107,13 @@ speakBtn.addEventListener('click', (e)=>{
 			
 			const reducedTransc = transcript.slice(14);
 			const trimTransc = reducedTransc.trim();
-			/* console.log(reducedTransc);
-			console.log(trimTransc); */
+			
 			todoInput.value = trimTransc;
-			const todo = {content: todoInput.value, category: "business", done: false, createdAt: new Date().getTime()};
+			
 			newTodoForm.addEventListener('change', ()=>{
-				const todo = {content: todoInput.value, category: "business", done: false, createdAt: new Date().getTime()};
+				todo = {content: todoInput.value, category: "business", done: false, createdAt: new Date().getTime()};
 			});
-			addBtn.addEventListener('click', ()=>{
-				todos.push(todo);
-				localStorage.setItem('todos', JSON.stringify(todos));
-				todoInput.value="";
-			});
+			
 			DisplayTodos();
 		}
 	  });
@@ -166,18 +157,16 @@ function DisplayTodos () {
 
 		input.type = 'checkbox';
 		input.checked = todo.done;
-		//console.log(input.checked)
+		
 		span.classList.add('bubble');
 		if (todo.category == 'personal') {
 			span.classList.add('personal');
-		} /* else {
-			span.classList.add('business');
-		} */
+		}
 		content.classList.add('todo-content');
 		actions.classList.add('actions');
 		edit.classList.add('edit');
 		deleteButton.classList.add('delete');
-		let datesOutput = new Date(todo.createdAt)
+		/* let datesOutput = new Date(todo.createdAt) */
 		/* let stringToShow = `${todo.content}` + " was created at: " + `${datesOutput.getDate().toString()}` + 
 		"/" +`${((datesOutput.getMonth())+1).toString()}`+
 		"/" + `${datesOutput.getFullYear().toString()}` +
@@ -246,14 +235,12 @@ function DisplayTodos () {
 		})
 
 	})
-	let countTotalItems = JSON.parse(localStorage.getItem('todos'))
-	//console.log(countTotalItems.length)
 	
 	let remaining = document.getElementById('remaining');
 	
 	let countDoneItems = JSON.parse(localStorage.getItem('todos'));
 	let resultDoneItems = countDoneItems.filter(item => item.done == true);
-	//console.log(resultDoneItems.length)
+	
 	remaining.innerHTML = "You have " + `${resultDoneItems.length}` + " done tasks out of a total of " + `${countDoneItems.length}` + "!";
 
 }
