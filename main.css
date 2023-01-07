@@ -37,7 +37,7 @@ input:not([type="radio"]):not([type="checkbox"]), button {
 body {
     background: var(--light);
     color: var(--dark);
-    min-width: 400px;
+    min-width: 800px;
 }
 
 section {
@@ -191,12 +191,15 @@ input:checked ~ .bubble::after{
     /* sytling Add todo button */
 }
 
-.create-todo input[type="submit"] {
-    transform: translateY(4px)
-}
-
 .create-todo input[type="submit"]/* .active */ {
     opacity: 1;
+    transform: translateY(4px)
+    /* pointer-events: pointer; */
+}
+
+.create-todo input[type="submit"]:active {
+    opacity: 1;
+    transform: translateY(4px)
     /* pointer-events: pointer; */
 }
 
@@ -247,7 +250,7 @@ input:checked ~ .bubble::after{
     border-radius: 0.25rem;
     color: #FFF;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.4s;
 }
 
 .todo-item .actions button:hover {
@@ -297,5 +300,6 @@ input:checked ~ .bubble::after{
 }
 
 .speak:active {
+    opacity: 1;
     transform: translateY(4px);
 }
