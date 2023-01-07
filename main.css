@@ -191,6 +191,10 @@ input:checked ~ .bubble::after{
     /* sytling Add todo button */
 }
 
+.create-todo input[type="submit"] {
+    transform: translateY(4px)
+}
+
 .create-todo input[type="submit"]/* .active */ {
     opacity: 1;
     /* pointer-events: pointer; */
@@ -286,4 +290,12 @@ input:checked ~ .bubble::after{
     font-weight: bold;
     border-radius: 8px;
     font-size: larger;
+}
+
+.speak:hover {
+    opacity: 0.75;
+}
+
+.speak:active {
+    transform: translateY(4px);
 }
