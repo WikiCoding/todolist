@@ -118,7 +118,7 @@ speakBtn.addEventListener('click', (e)=>{
 		}
 	  });
 	  recognition.start();
-	  setTimeout((recognition.addEventListener('end', recognition.end)),7000);
+	  //setTimeout((recognition.addEventListener('end', recognition.end)),7000);
 });
 
 DisplayTodos()
@@ -174,7 +174,7 @@ function DisplayTodos () {
 		" " + `${datesOutput.getHours().toString()}` +
 		":" + `${datesOutput.getMinutes().toString()}`; */
 		let stringToShow = `${todo.content}`
-		content.innerHTML = `<input type="text" value="${stringToShow}" readonly>`;
+		content.innerHTML = `<input type="text" class="inpts" value="${stringToShow}" readonly>`;
 		edit.innerHTML = 'Edit';
 		deleteButton.innerHTML = 'Delete';
 
@@ -208,19 +208,32 @@ function DisplayTodos () {
 		
 		edit.addEventListener('click', (e) => {
 			const input = content.querySelector('input');
+			edit.innerHTML = "Save";
+			edit.setAttribute('id', 'save-items');
+			const inpts = todoList.querySelector('.inpts');
+            const saveItems = todoList.querySelector('#save-items');
 			input.removeAttribute('readonly');
+			
+			saveItems.addEventListener('click', ()=>{
+				input.setAttribute('readonly', true);
+				todo.content = inpts.value;
+				localStorage.setItem('todos', JSON.stringify(todos));
+				DisplayTodos()
+			})
+
 			input.focus();
+
 			input.addEventListener('keypress', (e) => {
 				if (e.key === 'Enter') {
 					input.setAttribute('readonly', true);
-					todo.content = e.target.value;
+					todo.content = inpts.value;
 					localStorage.setItem('todos', JSON.stringify(todos));
 					DisplayTodos()
 				}
 				else {
 					input.addEventListener('blur', (e) => {
 						input.setAttribute('readonly', true);
-						todo.content = e.target.value;
+						todo.content = inpts.value;
 						localStorage.setItem('todos', JSON.stringify(todos));
 						DisplayTodos()
 					})
