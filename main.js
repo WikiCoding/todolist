@@ -117,7 +117,8 @@ speakBtn.addEventListener('click', (e)=>{
 			DisplayTodos();
 		}
 	  });
-	  setTimeout((recognition.start()),7000);
+	  recognition.start();
+	  setTimeout((recognition.addEventListener('end', recognition.end)),7000);
 });
 
 DisplayTodos()
