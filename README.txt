@@ -6,3 +6,4 @@ I've upgraded this code with:
 - sorting options
 - counting of todos
 - JSON manifest so and icon so it can be used as a Chrome Extension
+- Speech recongntion and voice commands to create tasks
